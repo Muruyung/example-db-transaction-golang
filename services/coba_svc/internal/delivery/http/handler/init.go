@@ -1,13 +1,13 @@
 package handler
 
-import "coba/services/coba_svc/domain/usecase"
+import "coba/services/coba_svc/domain/usecase/command"
 
 type Handler struct {
-	cobaSatuUC usecase.CobaSatuUseCase
+	cobaAjaCommand command.CobaAjaUseCase
 }
 
-func NewHandler(uc *usecase.Wrapper) *Handler {
+func NewHandler(command *command.Wrapper) *Handler {
 	return &Handler{
-		cobaSatuUC: uc.CobaSatuUC,
+		cobaAjaCommand: command.CobaAjaUC,
 	}
 }

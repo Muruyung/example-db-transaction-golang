@@ -9,11 +9,11 @@ import (
 
 	"coba/pkg/logger"
 	"coba/pkg/utils"
-	"coba/services/coba_svc/domain/usecase"
+	"coba/services/coba_svc/domain/usecase/command"
 	"coba/services/coba_svc/internal/delivery/request"
 )
 
-func (handler *Handler) SaveCobaSatu(w http.ResponseWriter, r *http.Request) {
+func (handler *Handler) SaveCobaAja(w http.ResponseWriter, r *http.Request) {
 	var (
 		ctx = context.WithValue(r.Context(), logger.ActivityID, uuid.Generate().String())
 		req request.RequestCoba
@@ -28,7 +28,7 @@ func (handler *Handler) SaveCobaSatu(w http.ResponseWriter, r *http.Request) {
 
 	start, _ := converter.ConvertStringToDate(req.StartDate)
 
-	err = handler.cobaSatuUC.CreateCobaSatu(ctx, usecase.DTOCobaSatu{
+	err = handler.cobaAjaCommand.CreateCobaAja(ctx, command.DTOCobaAja{
 		Name:      req.Name,
 		Age:       req.Age,
 		IsActive:  req.IsActive,

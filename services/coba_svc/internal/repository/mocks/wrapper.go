@@ -10,8 +10,8 @@ type Wrapper struct {
 
 func Init(ctrl *gomock.Controller) Wrapper {
 	return Wrapper{
-		MockCobaDuaRepository: NewMockCobaDuaRepository(ctrl),
+		MockSqlTx:              NewMockSqlTx(ctrl),
+		MockCobaDuaRepository:  NewMockCobaDuaRepository(ctrl),
 		MockCobaSatuRepository: NewMockCobaSatuRepository(ctrl),
-		MockSqlTx: NewMockSqlTx(ctrl),
 	}
 }

@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"coba/pkg/logger"
 	configmysql "coba/pkg/database/mysql"
+	"coba/pkg/logger"
 	"coba/services/coba_svc/domain/repository"
 	repository_mysql "coba/services/coba_svc/internal/repository/mysql"
 )
@@ -48,26 +48,40 @@ func (db *mysqlTxRepository) BeginTx(ctx context.Context, operation func(context
 		return err
 	}
 
-	tx, err := db.db.Begin()
-	if err != nil {
-		logger.DetailLoggerError(
-			ctx,
-			commandName,
-			"Begin transaction failed",
-			err,
-		)
+	var (
+		ctxTx     = context.WithValue(ctx, logger.IsUseES, true)
+		dbTx      = db
+		tx        *sql.Tx
+		err       error
+		isSession = false
+	)
+
+	if db.tx != nil && db.tx.UseTx {
+		tx = db.tx.Tx
+		isSession = true
+	} else {
+		tx, err = db.db.Begin()
+		if err != nil {
+			logger.DetailLoggerError(
+				ctx,
+				commandName,
+				"Begin transaction failed",
+				err,
+			)
+		}
+
+		dbTx = &mysqlTxRepository{
+			db: db.db,
+			tx: &configmysql.DB{
+				Tx:    tx,
+				UseTx: true,
+			},
+		}
+
+		dbTx.wrapper = repository_mysql.Init(dbTx)
 	}
 
-	dbTx := &mysqlTxRepository{
-		db: db.db,
-		tx: &configmysql.DB{
-			Tx:    tx,
-			UseTx: true,
-		},
-	}
-
-	ctxTx := context.WithValue(ctx, logger.IsUseES, true)
-	err = operation(ctxTx, repository_mysql.Init(dbTx))
+	err = operation(ctxTx, dbTx.Wrapper())
 	if err != nil {
 		errRollback := rollback(tx, err)
 		if errRollback != nil {
@@ -82,6 +96,11 @@ func (db *mysqlTxRepository) BeginTx(ctx context.Context, operation func(context
 		"Transaction commit process...",
 		nil,
 	)
+
+	if isSession {
+		return nil
+	}
+
 	err = tx.Commit()
 	if err != nil {
 		err = rollback(tx, err)

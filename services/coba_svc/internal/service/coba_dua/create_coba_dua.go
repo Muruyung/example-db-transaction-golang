@@ -1,11 +1,13 @@
 package coba_dua_service
 
 import (
-	"coba/services/coba_svc/domain/entity"
-	"coba/services/coba_svc/domain/service"
 	"context"
 
+	"github.com/docker/distribution/uuid"
+
 	"coba/pkg/logger"
+	"coba/services/coba_svc/domain/entity"
+	"coba/services/coba_svc/domain/service"
 )
 
 // CreateCobaDua create coba dua
@@ -19,6 +21,7 @@ func (svc *cobaDuaInteractor) CreateCobaDua(ctx context.Context, dto service.DTO
 	)
 
 	entityDTO, err := entity.NewCobaDua(entity.DTOCobaDua{
+		ID:        uuid.Generate().String(),
 		Age:       dto.Age,
 		IsActive:  dto.IsActive,
 		StartDate: dto.StartDate,

@@ -1,29 +1,29 @@
-package coba_satu_usecase
+package coba_aja_usecase
 
 import (
-	"coba/services/coba_svc/domain/service"
-	"coba/services/coba_svc/domain/usecase"
 	"context"
 	"fmt"
 
 	"coba/pkg/logger"
+	"coba/services/coba_svc/domain/service"
+	"coba/services/coba_svc/domain/usecase/command"
 )
 
-// UpdateCobaSatu update coba satu
-func (uc *cobaSatuInteractor) UpdateCobaSatu(ctx context.Context, id string, dto usecase.DTOCobaSatu) error {
-	const commandName = "UC-UPDATE-COBA-SATU"
+// UpdateCobaAja update coba aja
+func (uc *cobaAjaInteractor) UpdateCobaAja(ctx context.Context, id string, dto command.DTOCobaAja) error {
+	const commandName = "UC-UPDATE-COBA-AJA"
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Update coba satu process...",
+		"Update coba aja process...",
 		nil,
 	)
 
 	err := uc.CobaSatuSvc.UpdateCobaSatu(ctx, id, service.DTOCobaSatu{
+		Name:      dto.Name,
 		Age:       dto.Age,
 		IsActive:  dto.IsActive,
 		StartDate: dto.StartDate,
-		Name:      dto.Name,
 	})
 	if err != nil {
 		logger.DetailLoggerError(
@@ -38,7 +38,7 @@ func (uc *cobaSatuInteractor) UpdateCobaSatu(ctx context.Context, id string, dto
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Update coba satu success",
+		"Update coba aja success",
 		nil,
 	)
 	return nil

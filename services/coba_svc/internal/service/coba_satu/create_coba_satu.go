@@ -39,23 +39,6 @@ func (svc *cobaSatuInteractor) CreateCobaSatu(ctx context.Context, dto service.D
 		return err
 	}
 
-	entityDTO2, err := entity.NewCobaDua(entity.DTOCobaDua{
-		ID:        uuid.Generate().String(),
-		Name:      dto.Name,
-		Age:       dto.Age,
-		IsActive:  dto.IsActive,
-		StartDate: dto.StartDate,
-	})
-	if err != nil {
-		logger.DetailLoggerError(
-			ctx,
-			commandName,
-			"Error generate entity",
-			err,
-		)
-		return err
-	}
-
 	err = svc.repo.BeginTx(ctx, func(ctx context.Context, repo *repository.Wrapper) error {
 		data, _ := converter.ConvertInterfaceToMap(dto)
 		logger.DetailLoggerInfo(
@@ -76,16 +59,6 @@ func (svc *cobaSatuInteractor) CreateCobaSatu(ctx context.Context, dto service.D
 			return err
 		}
 
-		err = repo.CobaDuaRepo.Save(ctx, entityDTO2)
-		if err != nil {
-			logger.DetailLoggerError(
-				ctx,
-				commandName,
-				"Error create 2",
-				err,
-			)
-			return err
-		}
 		return nil
 	})
 

@@ -1,20 +1,21 @@
-package coba_satu_usecase
+package coba_aja_usecase
 
 import (
-	"coba/services/coba_svc/domain/entity"
 	"context"
 	"fmt"
 
 	"coba/pkg/logger"
+
+	"coba/services/coba_svc/domain/entity"
 )
 
-// GetCobaSatuByID get coba satu by id
-func (uc *cobaSatuInteractor) GetCobaSatuByID(ctx context.Context, id string) (*entity.CobaSatu, error) {
-	const commandName = "UC-GET-COBA-SATU-BY-ID"
+// GetCobaAjaByID get coba aja by id
+func (uc *cobaAjaInteractor) GetCobaAjaByID(ctx context.Context, id string) (*entity.CobaSatu, error) {
+	const commandName = "UC-GET-COBA-AJA-BY-ID"
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Get coba satu process...",
+		"Get coba aja process...",
 		nil,
 	)
 
@@ -32,7 +33,7 @@ func (uc *cobaSatuInteractor) GetCobaSatuByID(ctx context.Context, id string) (*
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Get coba satu success",
+		"Get coba aja success",
 		nil,
 	)
 	return res, nil

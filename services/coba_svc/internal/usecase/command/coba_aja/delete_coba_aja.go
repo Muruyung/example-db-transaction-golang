@@ -1,4 +1,4 @@
-package coba_satu_usecase
+package coba_aja_usecase
 
 import (
 	"context"
@@ -7,13 +7,13 @@ import (
 	"coba/pkg/logger"
 )
 
-// DeleteCobaSatu update coba satu
-func (uc *cobaSatuInteractor) DeleteCobaSatu(ctx context.Context, id string) error {
-	const commandName = "UC-DELETE-COBA-SATU"
+// DeleteCobaAja update coba aja
+func (uc *cobaAjaInteractor) DeleteCobaAja(ctx context.Context, id string) error {
+	const commandName = "UC-DELETE-COBA-AJA"
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Delete coba satu process...",
+		"Delete coba aja process...",
 		nil,
 	)
 
@@ -31,7 +31,7 @@ func (uc *cobaSatuInteractor) DeleteCobaSatu(ctx context.Context, id string) err
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Delete coba satu success",
+		"Delete coba aja success",
 		nil,
 	)
 	return nil

@@ -1,21 +1,22 @@
-package coba_satu_usecase
+package coba_aja_usecase
 
 import (
-	"coba/services/coba_svc/domain/entity"
 	"context"
 
 	"coba/pkg/logger"
 
 	goutils "github.com/Muruyung/go-utilities"
+
+	"coba/services/coba_svc/domain/entity"
 )
 
-// GetListCobaSatu get list coba satu
-func (uc *cobaSatuInteractor) GetListCobaSatu(ctx context.Context, request *goutils.RequestOption) ([]*entity.CobaSatu, *goutils.MetaResponse, error) {
-	const commandName = "UC-GET-LIST-COBA-SATU"
+// GetListCobaAja get list coba aja
+func (uc *cobaAjaInteractor) GetListCobaAja(ctx context.Context, request *goutils.RequestOption) ([]*entity.CobaSatu, *goutils.MetaResponse, error) {
+	const commandName = "UC-GET-LIST-COBA-AJA"
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Get list coba satu process...",
+		"Get list coba aja process...",
 		nil,
 	)
 
@@ -33,7 +34,7 @@ func (uc *cobaSatuInteractor) GetListCobaSatu(ctx context.Context, request *gout
 	logger.DetailLoggerInfo(
 		ctx,
 		commandName,
-		"Get list coba satu success",
+		"Get list coba aja success",
 		nil,
 	)
 	return res, metaRes, nil

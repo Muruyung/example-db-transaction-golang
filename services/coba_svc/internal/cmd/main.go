@@ -16,7 +16,8 @@ import (
 	httpmodule "coba/services/coba_svc/internal/delivery/http"
 	mysqltx "coba/services/coba_svc/internal/repository/mysql/mysql_tx"
 	"coba/services/coba_svc/internal/service"
-	"coba/services/coba_svc/internal/usecase"
+	svctx "coba/services/coba_svc/internal/service/svc_tx"
+	"coba/services/coba_svc/internal/usecase/command"
 )
 
 func main() {
@@ -33,8 +34,9 @@ func main() {
 		port      = dotenv.APPPORT()
 		mysqlDB   = configmysql.InitMysqlDB(dotenv.MYSQLCONFIG())
 		repo      = mysqltx.NewMysqlTx(mysqlDB)
-		svc       = service.Init(repo.Wrapper())
-		uc        = usecase.Init(svc)
+		svcTx     = svctx.NewSvcTx(repo.Wrapper())
+		svc       = service.Init(repo.Wrapper(), svcTx)
+		comm      = command.Init(svc)
 		originsOk = handlers.AllowedOrigins([]string{"*"})
 		headersOk = handlers.AllowedHeaders([]string{"Content-Type", "Accept-Language", "Authorization",
 			"X-Requested-With", "Ciam-Type", "X-Device", "X-App-Version", "Channel", "Device-Brand"})
@@ -47,6 +49,6 @@ func main() {
 		_ = mysqlDB.Close()
 	}(mysqlDB)
 
-	httpmodule.InitRoutes(router, uc)
+	httpmodule.InitRoutes(router, comm)
 	log.Fatal(http.ListenAndServe(port, handlers.CORS(originsOk, headersOk, methodsOk, credsOk)(router)))
 }

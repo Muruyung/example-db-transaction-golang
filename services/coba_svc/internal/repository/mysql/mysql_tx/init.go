@@ -16,9 +16,7 @@ type mysqlTxRepository struct {
 
 func NewMysqlTx(db *sql.DB) repository.SqlTx {
 	tx := &mysqlTxRepository{
-		db:      db,
-		tx:      configmysql.InitMysqlTx(db),
-		wrapper: nil,
+		db: db,
 	}
 
 	tx.wrapper = repository_mysql.Init(tx)
